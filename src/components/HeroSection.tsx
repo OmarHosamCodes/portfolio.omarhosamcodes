@@ -23,7 +23,7 @@ const HeroSection = () => {
 			opacity: 1,
 			transition: {
 				duration: 0.8,
-				ease: "easeOut",
+				ease: "easeOut" as const,
 			},
 		},
 	};
@@ -111,15 +111,17 @@ const HeroSection = () => {
 					<Button
 						size="lg"
 						className="transform rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-3 font-semibold text-white transition-all duration-300 hover:scale-105 hover:from-purple-700 hover:to-pink-700"
+						asChild
 					>
-						View My Work
+						<a href="#projects">View My Work</a>
 					</Button>
 					<Button
 						variant="outline"
 						size="lg"
 						className="rounded-full border-white/30 px-8 py-3 font-semibold text-white transition-all duration-300 hover:bg-white/10"
+						asChild
 					>
-						Get In Touch
+						<a href="#contact">Get In Touch</a>
 					</Button>
 				</motion.div>
 

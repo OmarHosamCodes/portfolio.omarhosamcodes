@@ -1,4 +1,6 @@
+import AboutSection from "@/components/AboutSection";
 import AppBar from "@/components/AppBar";
+import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import ProjectSection from "@/components/ProjectSection";
@@ -128,6 +130,10 @@ export default function HomePage() {
 						/>
 					))}
 				</section>
+
+				<AboutSection />
+
+				<ContactSection />
 			</main>
 
 			<Footer />
