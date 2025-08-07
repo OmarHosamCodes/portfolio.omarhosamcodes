@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, MapPin, Phone, Send } from "lucide-react";
+import { Github, Linkedin, Mail, Send } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -47,20 +47,6 @@ const ContactSection = () => {
 			value: "contact@omarhosamcodes.com",
 			href: "mailto:contact@omarhosamcodes.com",
 			color: "from-blue-400 to-cyan-500",
-		},
-		{
-			icon: Phone,
-			label: "Phone",
-			value: "+1 (555) 123-4567",
-			href: "tel:+15551234567",
-			color: "from-green-400 to-emerald-500",
-		},
-		{
-			icon: MapPin,
-			label: "Location",
-			value: "Available Worldwide",
-			href: "#",
-			color: "from-purple-400 to-violet-500",
 		},
 	];
 

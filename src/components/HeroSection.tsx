@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { type Easing, motion } from "framer-motion";
-import { ArrowDown, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 const HeroSection = () => {
 	const containerVariants = {
@@ -138,27 +138,6 @@ const HeroSection = () => {
 						<span>Based in</span>
 						<span className="font-medium text-white">Egypt</span>
 					</div>
-				</motion.div>
-
-				{/* Scroll Indicator */}
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 2, duration: 0.8 }}
-					className="-translate-x-1/2 absolute bottom-8 left-1/2 transform"
-				>
-					<motion.div
-						animate={{ y: [0, 10, 0] }}
-						transition={{
-							duration: 2,
-							repeat: Number.POSITIVE_INFINITY,
-							ease: "easeInOut",
-						}}
-						className="flex flex-col items-center space-y-2 text-gray-400"
-					>
-						<span className="text-xs uppercase tracking-wider">Scroll</span>
-						<ArrowDown className="h-4 w-4" />
-					</motion.div>
 				</motion.div>
 			</motion.div>
 		</section>
