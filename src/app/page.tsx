@@ -1,4 +1,7 @@
-import ProjectCard from "@/components/ProjectCard";
+import AppBar from "@/components/AppBar";
+import Footer from "@/components/Footer";
+import HeroSection from "@/components/HeroSection";
+import ProjectSection from "@/components/ProjectSection";
 
 export default function HomePage() {
 	const projects = {
@@ -96,41 +99,38 @@ export default function HomePage() {
 	};
 
 	return (
-		<main className="min-h-screen bg-background text-white">
-			<div className="container mx-auto px-4 py-16">
-				<section className="mb-16 text-center">
-					<h1 className="font-extrabold text-5xl tracking-tight sm:text-[5rem]">
-						Omar Hosam
-					</h1>
-					<p className="mt-4 text-2xl">
-						Full-Stack Developer & Tech Enthusiast
-					</p>
-					<p className="mx-auto mt-6 max-w-2xl text-lg">
-						I build robust and scalable web applications, CLI tools, and
-						everything in between. Explore my work below.
-					</p>
-				</section>
+		<div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+			<AppBar />
 
-				<div className="space-y-16">
+			<main>
+				<HeroSection />
+
+				<section id="projects" className="container mx-auto px-4 pt-20">
+					<div className="mb-16 text-center">
+						<h2 className="mb-6 font-bold text-5xl text-white">
+							My{" "}
+							<span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+								Projects
+							</span>
+						</h2>
+						<p className="mx-auto max-w-3xl text-gray-300 text-xl">
+							Explore my diverse portfolio of web applications, tools, and
+							digital solutions. Each project represents a unique challenge and
+							creative solution.
+						</p>
+					</div>
+
 					{Object.entries(projects).map(([category, projectList]) => (
-						<section key={category}>
-							<h2 className="mb-8 font-bold text-3xl capitalize">
-								{category.replace(/_/g, " ")}
-							</h2>
-							<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-								{projectList.map((project) => (
-									<ProjectCard
-										key={project.title}
-										title={project.title}
-										description={project.description}
-										tags={project.tags}
-									/>
-								))}
-							</div>
-						</section>
+						<ProjectSection
+							key={category}
+							category={category}
+							projects={projectList}
+						/>
 					))}
-				</div>
-			</div>
-		</main>
+				</section>
+			</main>
+
+			<Footer />
+		</div>
 	);
 }
