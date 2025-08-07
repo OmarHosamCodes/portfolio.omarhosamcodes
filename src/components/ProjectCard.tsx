@@ -25,7 +25,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
 	const Icon = config.icon;
 
 	return (
-		<motion.div
+		<motion.article
 			variants={cardVariants}
 			custom={index}
 			whileHover={{
@@ -34,6 +34,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
 				transition: { duration: 0.2 },
 			}}
 			className={`group relative overflow-hidden rounded-2xl border ${config.borderColor} bg-gradient-to-br ${config.bgGradient} p-6 shadow-xl backdrop-blur-sm transition-all duration-300 hover:shadow-2xl`}
+			aria-labelledby={`project-${index}-title`}
 		>
 			{/* Background Pattern */}
 			<div className="absolute inset-0 opacity-5">
@@ -83,7 +84,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
 				</div>
 
 				{/* Title and Description */}
-				<h3 className="mb-3 font-bold text-white text-xl transition-colors group-hover:text-white/90">
+				<h3 id={`project-${index}-title`} className="mb-3 font-bold text-white text-xl transition-colors group-hover:text-white/90">
 					{title}
 				</h3>
 				<p className="mb-6 text-gray-300 leading-relaxed transition-colors group-hover:text-gray-200">
@@ -106,7 +107,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
 					))}
 				</div>
 			</div>
-		</motion.div>
+		</motion.article>
 	);
 };
 
