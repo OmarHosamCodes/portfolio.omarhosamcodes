@@ -1,8 +1,10 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, MapPin, Phone, Send } from "lucide-react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const contactFormSchema = z.object({
@@ -27,16 +29,16 @@ const contactFormSchema = z.object({
 type ContactFormData = z.infer<typeof contactFormSchema>;
 
 const ContactSection = () => {
-	const [formData, setFormData] = useState<ContactFormData>({
-		name: "",
-		email: "",
-		subject: "",
-		message: "",
-	});
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [errors, setErrors] = useState<
-		Partial<Record<keyof ContactFormData, string>>
-	>({});
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		reset,
+	} = useForm<ContactFormData>({
+		resolver: zodResolver(contactFormSchema),
+	});
 
 	const contactInfo = [
 		{
@@ -83,41 +85,7 @@ const ContactSection = () => {
 		},
 	];
 
-	const handleInputChange = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-	) => {
-		const { name, value } = e.target;
-		setFormData((prev) => ({
-			...prev,
-			[name]: value,
-		}));
-
-		// Clear error for this field when user starts typing
-		if (errors[name as keyof ContactFormData]) {
-			setErrors((prev) => ({
-				...prev,
-				[name]: undefined,
-			}));
-		}
-	};
-
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
-		setErrors({});
-
-		// Validate form data with Zod
-		const validationResult = contactFormSchema.safeParse(formData);
-
-		if (!validationResult.success) {
-			const fieldErrors: Partial<Record<keyof ContactFormData, string>> = {};
-			for (const error of validationResult.error.issues) {
-				const field = error.path[0] as keyof ContactFormData;
-				fieldErrors[field] = error.message;
-			}
-			setErrors(fieldErrors);
-			return;
-		}
-
+	const onSubmit = async (data: ContactFormData) => {
 		setIsSubmitting(true);
 
 		try {
@@ -125,12 +93,7 @@ const ContactSection = () => {
 			await new Promise((resolve) => setTimeout(resolve, 2000));
 
 			// Reset form
-			setFormData({
-				name: "",
-				email: "",
-				subject: "",
-				message: "",
-			});
+			reset();
 
 			// You would typically send this data to your backend here
 			alert("Thank you for your message! I'll get back to you soon.");
@@ -241,7 +204,7 @@ const ContactSection = () => {
 					transition={{ duration: 0.8, delay: 0.2 }}
 					viewport={{ once: true }}
 				>
-					<form onSubmit={handleSubmit} className="space-y-6">
+					<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 						<div className="grid gap-6 md:grid-cols-2">
 							<div>
 								<label
@@ -253,9 +216,7 @@ const ContactSection = () => {
 								<input
 									type="text"
 									id="name"
-									name="name"
-									value={formData.name}
-									onChange={handleInputChange}
+									{...register("name")}
 									className={`w-full rounded-lg border bg-white/5 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 ${
 										errors.name
 											? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
@@ -264,7 +225,9 @@ const ContactSection = () => {
 									placeholder="Your name"
 								/>
 								{errors.name && (
-									<p className="mt-1 text-red-400 text-sm">{errors.name}</p>
+									<p className="mt-1 text-red-400 text-sm">
+										{errors.name.message}
+									</p>
 								)}
 							</div>
 							<div>
@@ -277,9 +240,7 @@ const ContactSection = () => {
 								<input
 									type="email"
 									id="email"
-									name="email"
-									value={formData.email}
-									onChange={handleInputChange}
+									{...register("email")}
 									className={`w-full rounded-lg border bg-white/5 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 ${
 										errors.email
 											? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
@@ -288,7 +249,9 @@ const ContactSection = () => {
 									placeholder="your@email.com"
 								/>
 								{errors.email && (
-									<p className="mt-1 text-red-400 text-sm">{errors.email}</p>
+									<p className="mt-1 text-red-400 text-sm">
+										{errors.email.message}
+									</p>
 								)}
 							</div>
 						</div>
@@ -303,9 +266,7 @@ const ContactSection = () => {
 							<input
 								type="text"
 								id="subject"
-								name="subject"
-								value={formData.subject}
-								onChange={handleInputChange}
+								{...register("subject")}
 								className={`w-full rounded-lg border bg-white/5 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 ${
 									errors.subject
 										? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
@@ -314,7 +275,9 @@ const ContactSection = () => {
 								placeholder="Project inquiry, collaboration, etc."
 							/>
 							{errors.subject && (
-								<p className="mt-1 text-red-400 text-sm">{errors.subject}</p>
+								<p className="mt-1 text-red-400 text-sm">
+									{errors.subject.message}
+								</p>
 							)}
 						</div>
 
@@ -327,9 +290,7 @@ const ContactSection = () => {
 							</label>
 							<textarea
 								id="message"
-								name="message"
-								value={formData.message}
-								onChange={handleInputChange}
+								{...register("message")}
 								rows={6}
 								className={`w-full rounded-lg border bg-white/5 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 ${
 									errors.message
@@ -339,7 +300,9 @@ const ContactSection = () => {
 								placeholder="Tell me about your project or what you'd like to discuss..."
 							/>
 							{errors.message && (
-								<p className="mt-1 text-red-400 text-sm">{errors.message}</p>
+								<p className="mt-1 text-red-400 text-sm">
+									{errors.message.message}
+								</p>
 							)}
 						</div>
 
