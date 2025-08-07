@@ -5,7 +5,7 @@
 		"clientKind": "git",
 		"useIgnoreFile": true
 	},
-	"files": { "ignoreUnknown": false, "ignore": [] },
+	"files": { "ignoreUnknown": false, "ignore": ["generated/**"] },
 	"formatter": { "enabled": true },
 	"organizeImports": { "enabled": true },
 	"linter": {
@@ -21,6 +21,22 @@
 				}
 			},
 			"recommended": true
-		}
+		},
+		"ignore": [
+			"node_modules",
+			"dist",
+			"build",
+			"coverage",
+			"public",
+			"out",
+			"lib",
+			"es",
+			"cjs",
+			".next",
+			".vercel",
+			"generated",
+			"prisma",
+			"scripts"
+		]
 	}
 }
