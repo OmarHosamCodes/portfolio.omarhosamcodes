@@ -1,32 +1,15 @@
 "use client";
 
+import {
+	type ContactFormData,
+	type CreateMessageResponse,
+	contactFormSchema,
+} from "@/types/message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, Send } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-const contactFormSchema = z.object({
-	name: z
-		.string()
-		.min(1, "Name is required")
-		.min(2, "Name must be at least 2 characters"),
-	email: z
-		.string()
-		.min(1, "Email is required")
-		.email("Please enter a valid email"),
-	subject: z
-		.string()
-		.min(1, "Subject is required")
-		.min(5, "Subject must be at least 5 characters"),
-	message: z
-		.string()
-		.min(1, "Message is required")
-		.min(10, "Message must be at least 10 characters"),
-});
-
-type ContactFormData = z.infer<typeof contactFormSchema>;
 
 const ContactSection = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -75,15 +58,25 @@ const ContactSection = () => {
 		setIsSubmitting(true);
 
 		try {
-			// Simulate form submission
-			await new Promise((resolve) => setTimeout(resolve, 2000));
+			const response = await fetch("/api/messages", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(data),
+			});
 
-			// Reset form
-			reset();
+			const result: CreateMessageResponse = await response.json();
 
-			// You would typically send this data to your backend here
-			alert("Thank you for your message! I'll get back to you soon.");
+			if (result.success) {
+				// Reset form
+				reset();
+				alert("Thank you for your message! I'll get back to you soon.");
+			} else {
+				alert(result.message || "Something went wrong. Please try again.");
+			}
 		} catch (error) {
+			console.error("Error sending message:", error);
 			alert("Something went wrong. Please try again.");
 		} finally {
 			setIsSubmitting(false);
