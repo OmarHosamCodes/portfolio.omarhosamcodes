@@ -1,91 +1,16 @@
 "use client";
 
-import { type Easing, motion } from "framer-motion";
-import {
-	BarChart3,
-	Code2,
-	Database,
-	ExternalLink,
-	Github,
-	Globe,
-	Smartphone,
-	Terminal,
-} from "lucide-react";
+import { cardVariants } from "@/constants";
+import { getCategoryConfig } from "@/lib/project-utils";
+import type { Project, ProjectCategoryKey } from "@/types";
+import { motion } from "framer-motion";
+import { ExternalLink, Github } from "lucide-react";
 import type { FC } from "react";
 
-interface ProjectCardProps {
-	title: string;
-	description: string;
-	tags: string[];
-	category: string;
+interface ProjectCardProps extends Project {
+	category: ProjectCategoryKey;
 	index?: number;
 }
-
-const categoryConfig = {
-	websites: {
-		icon: Globe,
-		gradient: "from-blue-500 to-cyan-500",
-		bgGradient: "from-blue-500/10 to-cyan-500/10",
-		borderColor: "border-blue-500/30",
-		tagStyle: "bg-blue-400/20 text-blue-300",
-	},
-	wordpress: {
-		icon: Code2,
-		gradient: "from-indigo-500 to-purple-500",
-		bgGradient: "from-indigo-500/10 to-purple-500/10",
-		borderColor: "border-indigo-500/30",
-		tagStyle: "bg-indigo-400/20 text-indigo-300",
-	},
-	cli: {
-		icon: Terminal,
-		gradient: "from-green-500 to-emerald-500",
-		bgGradient: "from-green-500/10 to-emerald-500/10",
-		borderColor: "border-green-500/30",
-		tagStyle: "bg-green-400/20 text-green-300",
-	},
-	databases: {
-		icon: Database,
-		gradient: "from-orange-500 to-red-500",
-		bgGradient: "from-orange-500/10 to-red-500/10",
-		borderColor: "border-orange-500/30",
-		tagStyle: "bg-orange-400/20 text-orange-300",
-	},
-	analytics: {
-		icon: BarChart3,
-		gradient: "from-pink-500 to-rose-500",
-		bgGradient: "from-pink-500/10 to-rose-500/10",
-		borderColor: "border-pink-500/30",
-		tagStyle: "bg-pink-400/20 text-pink-300",
-	},
-	mobile: {
-		icon: Smartphone,
-		gradient: "from-violet-500 to-purple-500",
-		bgGradient: "from-violet-500/10 to-purple-500/10",
-		borderColor: "border-violet-500/30",
-		tagStyle: "bg-violet-400/20 text-violet-300",
-	},
-	apis: {
-		icon: Code2,
-		gradient: "from-teal-500 to-cyan-500",
-		bgGradient: "from-teal-500/10 to-cyan-500/10",
-		borderColor: "border-teal-500/30",
-		tagStyle: "bg-teal-400/20 text-teal-300",
-	},
-};
-
-const cardVariants = {
-	hidden: { opacity: 0, y: 30, scale: 0.95 },
-	visible: (index: number) => ({
-		opacity: 1,
-		y: 0,
-		scale: 1,
-		transition: {
-			duration: 0.5,
-			delay: index * 0.1,
-			ease: "easeOut" as Easing,
-		},
-	}),
-};
 
 const ProjectCard: FC<ProjectCardProps> = ({
 	title,
@@ -93,10 +18,10 @@ const ProjectCard: FC<ProjectCardProps> = ({
 	tags,
 	category,
 	index = 0,
+	githubUrl,
+	liveUrl,
 }) => {
-	const config =
-		categoryConfig[category as keyof typeof categoryConfig] ||
-		categoryConfig.websites;
+	const config = getCategoryConfig(category);
 	const Icon = config.icon;
 
 	return (
@@ -130,20 +55,30 @@ const ProjectCard: FC<ProjectCardProps> = ({
 						<Icon className="h-6 w-6 text-white" />
 					</div>
 					<div className="flex space-x-2">
-						<motion.button
-							whileHover={{ scale: 1.1 }}
-							whileTap={{ scale: 0.9 }}
-							className="rounded-full bg-white/10 p-2 text-white/60 backdrop-blur-sm transition-colors hover:bg-white/20 hover:text-white"
-						>
-							<Github className="h-4 w-4" />
-						</motion.button>
-						<motion.button
-							whileHover={{ scale: 1.1 }}
-							whileTap={{ scale: 0.9 }}
-							className="rounded-full bg-white/10 p-2 text-white/60 backdrop-blur-sm transition-colors hover:bg-white/20 hover:text-white"
-						>
-							<ExternalLink className="h-4 w-4" />
-						</motion.button>
+						{githubUrl && (
+							<motion.a
+								href={githubUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+								whileHover={{ scale: 1.1 }}
+								whileTap={{ scale: 0.9 }}
+								className="rounded-full bg-white/10 p-2 text-white/60 backdrop-blur-sm transition-colors hover:bg-white/20 hover:text-white"
+							>
+								<Github className="h-4 w-4" />
+							</motion.a>
+						)}
+						{liveUrl && (
+							<motion.a
+								href={liveUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+								whileHover={{ scale: 1.1 }}
+								whileTap={{ scale: 0.9 }}
+								className="rounded-full bg-white/10 p-2 text-white/60 backdrop-blur-sm transition-colors hover:bg-white/20 hover:text-white"
+							>
+								<ExternalLink className="h-4 w-4" />
+							</motion.a>
+						)}
 					</div>
 				</div>
 
