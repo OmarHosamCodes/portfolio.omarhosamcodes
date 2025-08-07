@@ -5,11 +5,11 @@ import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import ProjectSection from "@/components/ProjectSection";
 import { projectsData } from "@/data";
-import type { ProjectCategoryKey } from "@/types";
+import type { ProjectsData } from "@/types";
 
 export default function HomePage() {
 	const projects = projectsData;
-	const categories = Object.keys(projects) as ProjectCategoryKey[];
+	const categories = Object.keys(projects) as (keyof ProjectsData)[];
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">

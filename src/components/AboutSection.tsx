@@ -39,7 +39,7 @@ const AboutSection = () => {
 		{
 			icon: Code,
 			title: "Programming Languages",
-			description: "JavaScript, TypeScript, Python, PHP, Go, Dart",
+			description: "JavaScript, TypeScript, Python, PHP, Rust, Dart",
 			color: "from-pink-400 to-rose-500",
 		},
 		{
