@@ -1,62 +1,20 @@
 "use client";
 
-import { type Easing, motion } from "framer-motion";
-import {
-	BarChart3,
-	Code2,
-	Database,
-	Globe,
-	Smartphone,
-	Terminal,
-} from "lucide-react";
+import { sectionVariants, titleVariants } from "@/constants";
+import { formatCategoryTitle, getCategoryConfig } from "@/lib/project-utils";
+import type { Project, ProjectCategoryKey } from "@/types";
+import { motion } from "framer-motion";
 import ProjectCard from "./ProjectCard";
 
-interface Project {
-	title: string;
-	description: string;
-	tags: string[];
-}
-
 interface ProjectSectionProps {
-	category: string;
+	category: ProjectCategoryKey;
 	projects: Project[];
 }
 
-const categoryIcons = {
-	websites: Globe,
-	wordpress: Code2,
-	cli: Terminal,
-	databases: Database,
-	analytics: BarChart3,
-	mobile: Smartphone,
-	apis: Code2,
-};
-
-const sectionVariants = {
-	hidden: { opacity: 0 },
-	visible: {
-		opacity: 1,
-		transition: {
-			staggerChildren: 0.1,
-			delayChildren: 0.2,
-		},
-	},
-};
-
-const titleVariants = {
-	hidden: { opacity: 0, x: -30 },
-	visible: {
-		opacity: 1,
-		x: 0,
-		transition: { duration: 0.6, ease: "easeInOut" as Easing },
-	},
-};
-
 const ProjectSection = ({ category, projects }: ProjectSectionProps) => {
-	const Icon = categoryIcons[category as keyof typeof categoryIcons] || Globe;
-	const formattedTitle = category
-		.replace(/_/g, " ")
-		.replace(/\b\w/g, (l) => l.toUpperCase());
+	const config = getCategoryConfig(category);
+	const Icon = config.icon;
+	const formattedTitle = formatCategoryTitle(category);
 
 	return (
 		<motion.section
@@ -83,9 +41,7 @@ const ProjectSection = ({ category, projects }: ProjectSectionProps) => {
 				{projects.map((project, index) => (
 					<ProjectCard
 						key={project.title}
-						title={project.title}
-						description={project.description}
-						tags={project.tags}
+						{...project}
 						category={category}
 						index={index}
 					/>
