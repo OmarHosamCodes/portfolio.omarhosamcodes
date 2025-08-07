@@ -73,7 +73,7 @@ const AboutSection = () => {
 	};
 
 	return (
-		<section id="about" className="container mx-auto px-4 py-20">
+		<section id="about" className="container mx-auto px-4 py-20" aria-labelledby="about-heading">
 			<motion.div
 				initial={{ opacity: 0, y: 20 }}
 				whileInView={{ opacity: 1, y: 0 }}
@@ -81,7 +81,7 @@ const AboutSection = () => {
 				viewport={{ once: true }}
 				className="mb-16 text-center"
 			>
-				<h2 className="mb-6 font-bold text-5xl text-white">
+				<h2 id="about-heading" className="mb-6 font-bold text-5xl text-white">
 					About{" "}
 					<span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
 						Me

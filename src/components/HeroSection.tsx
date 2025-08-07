@@ -44,12 +44,13 @@ const HeroSection = () => {
 		<section
 			id="home"
 			className="relative flex min-h-screen items-center justify-center overflow-hidden"
+			aria-labelledby="hero-heading"
 		>
 			{/* Background Effects */}
-			<div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-pink-900/20" />
+			<div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-pink-900/20" aria-hidden="true" />
 
 			{/* Floating Elements */}
-			<div className="pointer-events-none absolute inset-0 overflow-hidden">
+			<div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
 				{[...Array(20)].map((_, i) => (
 					<motion.div
 						key={`floating-${i}-${Math.random()}`}
@@ -69,7 +70,7 @@ const HeroSection = () => {
 			</div>
 
 			{/* Main Content */}
-			<motion.div
+			<motion.header
 				variants={containerVariants}
 				initial="hidden"
 				animate="visible"
@@ -85,6 +86,7 @@ const HeroSection = () => {
 				</motion.div>
 
 				<motion.h1
+					id="hero-heading"
 					variants={itemVariants}
 					className="mb-6 font-extrabold text-5xl tracking-tight md:text-7xl lg:text-8xl"
 				>
@@ -139,7 +141,7 @@ const HeroSection = () => {
 						<span className="font-medium text-white">Egypt</span>
 					</div>
 				</motion.div>
-			</motion.div>
+			</motion.header>
 		</section>
 	);
 };
