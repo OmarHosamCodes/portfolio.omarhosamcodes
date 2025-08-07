@@ -3,22 +3,47 @@
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, MapPin, Phone, Send } from "lucide-react";
 import { useState } from "react";
+import { z } from "zod";
+
+const contactFormSchema = z.object({
+	name: z
+		.string()
+		.min(1, "Name is required")
+		.min(2, "Name must be at least 2 characters"),
+	email: z
+		.string()
+		.min(1, "Email is required")
+		.email("Please enter a valid email"),
+	subject: z
+		.string()
+		.min(1, "Subject is required")
+		.min(5, "Subject must be at least 5 characters"),
+	message: z
+		.string()
+		.min(1, "Message is required")
+		.min(10, "Message must be at least 10 characters"),
+});
+
+type ContactFormData = z.infer<typeof contactFormSchema>;
 
 const ContactSection = () => {
-	const [formData, setFormData] = useState({
+	const [formData, setFormData] = useState<ContactFormData>({
 		name: "",
 		email: "",
 		subject: "",
 		message: "",
 	});
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [errors, setErrors] = useState<
+		Partial<Record<keyof ContactFormData, string>>
+	>({});
 
 	const contactInfo = [
 		{
 			icon: Mail,
 			label: "Email",
-			value: "omar@omarhosamcodes.com",
-			href: "mailto:omar@omarhosamcodes.com",
+			value: "contact@omarhosamcodes.com",
+			href: "mailto:contact@omarhosamcodes.com",
 			color: "from-blue-400 to-cyan-500",
 		},
 		{
@@ -53,7 +78,7 @@ const ContactSection = () => {
 		{
 			icon: Mail,
 			label: "Email",
-			href: "mailto:omar@omarhosamcodes.com",
+			href: "mailto:contact@omarhosamcodes.com",
 			color: "hover:text-red-400",
 		},
 	];
@@ -66,26 +91,54 @@ const ContactSection = () => {
 			...prev,
 			[name]: value,
 		}));
+
+		// Clear error for this field when user starts typing
+		if (errors[name as keyof ContactFormData]) {
+			setErrors((prev) => ({
+				...prev,
+				[name]: undefined,
+			}));
+		}
 	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
+		setErrors({});
+
+		// Validate form data with Zod
+		const validationResult = contactFormSchema.safeParse(formData);
+
+		if (!validationResult.success) {
+			const fieldErrors: Partial<Record<keyof ContactFormData, string>> = {};
+			for (const error of validationResult.error.issues) {
+				const field = error.path[0] as keyof ContactFormData;
+				fieldErrors[field] = error.message;
+			}
+			setErrors(fieldErrors);
+			return;
+		}
+
 		setIsSubmitting(true);
 
-		// Simulate form submission
-		await new Promise((resolve) => setTimeout(resolve, 2000));
+		try {
+			// Simulate form submission
+			await new Promise((resolve) => setTimeout(resolve, 2000));
 
-		// Reset form
-		setFormData({
-			name: "",
-			email: "",
-			subject: "",
-			message: "",
-		});
-		setIsSubmitting(false);
+			// Reset form
+			setFormData({
+				name: "",
+				email: "",
+				subject: "",
+				message: "",
+			});
 
-		// You would typically send this data to your backend here
-		alert("Thank you for your message! I'll get back to you soon.");
+			// You would typically send this data to your backend here
+			alert("Thank you for your message! I'll get back to you soon.");
+		} catch (error) {
+			alert("Something went wrong. Please try again.");
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	return (
@@ -203,10 +256,16 @@ const ContactSection = () => {
 									name="name"
 									value={formData.name}
 									onChange={handleInputChange}
-									required
-									className="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+									className={`w-full rounded-lg border bg-white/5 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 ${
+										errors.name
+											? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+											: "border-white/20 focus:border-purple-500 focus:ring-purple-500/20"
+									}`}
 									placeholder="Your name"
 								/>
+								{errors.name && (
+									<p className="mt-1 text-red-400 text-sm">{errors.name}</p>
+								)}
 							</div>
 							<div>
 								<label
@@ -221,10 +280,16 @@ const ContactSection = () => {
 									name="email"
 									value={formData.email}
 									onChange={handleInputChange}
-									required
-									className="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+									className={`w-full rounded-lg border bg-white/5 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 ${
+										errors.email
+											? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+											: "border-white/20 focus:border-purple-500 focus:ring-purple-500/20"
+									}`}
 									placeholder="your@email.com"
 								/>
+								{errors.email && (
+									<p className="mt-1 text-red-400 text-sm">{errors.email}</p>
+								)}
 							</div>
 						</div>
 
@@ -241,10 +306,16 @@ const ContactSection = () => {
 								name="subject"
 								value={formData.subject}
 								onChange={handleInputChange}
-								required
-								className="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+								className={`w-full rounded-lg border bg-white/5 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 ${
+									errors.subject
+										? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+										: "border-white/20 focus:border-purple-500 focus:ring-purple-500/20"
+								}`}
 								placeholder="Project inquiry, collaboration, etc."
 							/>
+							{errors.subject && (
+								<p className="mt-1 text-red-400 text-sm">{errors.subject}</p>
+							)}
 						</div>
 
 						<div>
@@ -259,11 +330,17 @@ const ContactSection = () => {
 								name="message"
 								value={formData.message}
 								onChange={handleInputChange}
-								required
 								rows={6}
-								className="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+								className={`w-full rounded-lg border bg-white/5 px-4 py-3 text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 ${
+									errors.message
+										? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+										: "border-white/20 focus:border-purple-500 focus:ring-purple-500/20"
+								}`}
 								placeholder="Tell me about your project or what you'd like to discuss..."
 							/>
+							{errors.message && (
+								<p className="mt-1 text-red-400 text-sm">{errors.message}</p>
+							)}
 						</div>
 
 						<motion.button

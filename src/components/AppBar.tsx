@@ -25,7 +25,7 @@ const AppBar = () => {
 			href: "https://linkedin.com/in/omarhosamcodes",
 			label: "LinkedIn",
 		},
-		{ icon: Mail, href: "mailto:omar@omarhosamcodes.com", label: "Email" },
+		{ icon: Mail, href: "mailto:contact@omarhosamcodes.com", label: "Email" },
 	];
 
 	return (
