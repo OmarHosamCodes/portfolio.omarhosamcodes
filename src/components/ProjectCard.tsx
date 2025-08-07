@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { type Easing, motion } from "framer-motion";
 import {
 	BarChart3,
 	Code2,
@@ -82,7 +82,7 @@ const cardVariants = {
 		transition: {
 			duration: 0.5,
 			delay: index * 0.1,
-			ease: "easeOut",
+			ease: "easeOut" as Easing,
 		},
 	}),
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { type Easing, motion } from "framer-motion";
 import { ArrowDown, Sparkles } from "lucide-react";
 
 const HeroSection = () => {
@@ -35,7 +35,7 @@ const HeroSection = () => {
 			transition: {
 				duration: 6,
 				repeat: Number.POSITIVE_INFINITY,
-				ease: "easeInOut",
+				ease: "easeInOut" as Easing,
 			},
 		},
 	};
