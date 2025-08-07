@@ -4,7 +4,6 @@ import type {
 	Message,
 	MessageStatus,
 	MessagesFilter,
-	MessagesPagination,
 	MessagesResponse,
 } from "@/types/message";
 import type { Prisma } from "../../generated/prisma";
