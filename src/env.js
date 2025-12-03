@@ -11,6 +11,7 @@ export const env = createEnv({
 		DATABASE_URL: z.url(),
 		POSTGRES_URL: z.url(),
 		PRISMA_DATABASE_URL: z.url(),
+		ADMIN_PASSWORD: z.string().min(1),
 	},
 
 	/**
@@ -29,6 +30,7 @@ export const env = createEnv({
 		DATABASE_URL: process.env.DATABASE_URL,
 		POSTGRES_URL: process.env.POSTGRES_URL,
 		PRISMA_DATABASE_URL: process.env.PRISMA_DATABASE_URL,
+		ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
 		// NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 	},
 	/**

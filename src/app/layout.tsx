@@ -1,14 +1,13 @@
 import "@/styles/globals.css";
 
 import ErrorBoundary from "@/components/ErrorBoundary";
-import SkipNavigation from "@/components/SkipNavigation";
-import StructuredData from "@/components/StructuredData";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 
 const siteUrl = "https://omarhosamcodes.com";
 const siteName = "Omar Hosam Codes";
-const siteDescription = "Full-Stack Developer & Tech Enthusiast. I build robust and scalable web applications, CLI tools, and digital solutions. Transforming ideas into reality with modern technologies.";
+const siteDescription =
+	"Full-Stack Developer & Tech Enthusiast. I build robust and scalable web applications, CLI tools, and digital solutions. Transforming ideas into reality with modern technologies.";
 
 export const metadata: Metadata = {
 	title: {
@@ -88,9 +87,7 @@ export const metadata: Metadata = {
 			{ url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
 			{ url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
 		],
-		apple: [
-			{ url: "/apple-touch-icon.png", sizes: "180x180" },
-		],
+		apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
 		other: [
 			{ rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#8b5cf6" },
 		],
@@ -113,14 +110,14 @@ export default function RootLayout({
 		<html lang="en" className={`${poppins.variable} dark`}>
 			<head>
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
-				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+				<link
+					rel="preconnect"
+					href="https://fonts.gstatic.com"
+					crossOrigin="anonymous"
+				/>
 			</head>
 			<body className={poppins.className}>
-				<SkipNavigation />
-				<StructuredData />
-				<ErrorBoundary>
-					{children}
-				</ErrorBoundary>
+				<ErrorBoundary>{children}</ErrorBoundary>
 			</body>
 		</html>
 	);
